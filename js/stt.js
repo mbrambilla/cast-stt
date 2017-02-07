@@ -125,27 +125,27 @@
                     .addClass('active')
                     .attr('aria-pressed', true);
                 // Speech recognition ready
-                this.$element.trigger('start.cast.stt');
+                $selfRef.$element.trigger('start.cast.stt');
             };
 
             this.recognition.onerror = function(event) {
                 if (event.error == 'no-speech') {
                     // No speech was detected
-                    this.$element.trigger('nospeech.cast.stt');
+                    $selfRef.$element.trigger('nospeech.cast.stt');
                     ignore_onend = true;
                 }
                 if (event.error == 'audio-capture') {
                     // Microphone not found
-                    this.$element.trigger('nomic.cast.stt');
+                    $selfRef.$element.trigger('nomic.cast.stt');
                     ignore_onend = true;
                 }
                 if (event.error == 'not-allowed') {
                     if (event.timeStamp - start_timestamp < 100) {
                         // Microphone access is blocked
-                        this.$element.trigger('blocked.cast.stt');
+                        $selfRef.$element.trigger('blocked.cast.stt');
                     } else {
                         // Microphone access was denied
-                        this.$element.trigger('denied.cast.stt');
+                        $selfRef.$element.trigger('denied.cast.stt');
                     }
                     ignore_onend = true;
                 }
@@ -159,15 +159,14 @@
                 if (ignore_onend) {
                     return;
                 }
-                this.$element.trigger('end.cast.stt');
+                $selfRef.$element.trigger('end.cast.stt');
                 if (!final_transcript) {
-                    this.$element.trigger('ready.cast.stt');
+                    $selfRef.$element.trigger('ready.cast.stt');
                     return;
                 }
             };
 
             this.recognition.onresult = function(event) {
-
                 function capitalize(s) {
                     var first_char = /\S/;
                     return s.replace(first_char, function(m) { return m.toUpperCase(); });
