@@ -20,6 +20,9 @@
 
 <h1>Speech-to-Text - In Browser Test</h1>
 
+<h2>Examples</h2>
+
+<h2>Textarea</h3>
 <p>Click the microphone icon to start.</p>
 <div class="form-group">
     <label for="ex0">Example textarea</label>
@@ -29,7 +32,29 @@
     </div>
 </div>
 
-<h2>Options:</h2>
+<h3>Div</h3>
+<div class="stt-wrapper">
+    <div class="card card-block" id="ex1"></div>
+    <a href="#" role="button" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</a>
+</div>
+
+<hr />
+
+<h2>Usage</h2>
+
+<h3>Via Data Attributes</h3>
+<p>
+A basic STT will have a control item and target HTML element.  On the control add <code>data-cast="stt"</code> attribute and a <code>data-target</code> attribute with a selector that points to the target element via ID or CSS selector.
+</p>
+
+<h3>Via JavaScript</h3>
+<p>Call the plugin manually with options:</p>
+
+<pre><code>
+$('#mySTT').CAST_STT([options]);
+</code></pre>
+
+<h3>Options</h3>
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
     <thead>
@@ -57,7 +82,41 @@
     </table>
 </div>
 
-<h2>Events:</h2>
+<h3>Methods</h3>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 150px;">Method</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>start</td>
+            <td>Start speech recognition.</td>
+        </tr>
+        <tr>
+            <td>stop</td>
+            <td>Stop speech recognition.</td>
+        </tr>
+        <tr>
+            <td>enable</td>
+            <td>Enable the control button/link.</td>
+        </tr>
+        <tr>
+            <td>disable</td>
+            <td>Disable the control button/link.</td>
+        </tr>
+        <tr>
+            <td>dispose</td>
+            <td>Stop speech recognition and removes event listeners and data.</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+
+<h3>Events</h3>
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
     <thead>
