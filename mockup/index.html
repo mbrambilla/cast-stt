@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Speech-to-Text - In Browser Test</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="../css/stt.css" />
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
+<script src="../js/stt.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Speech-to-Text - In Browser Test</h1>
+
+<p>Click the microphone icon to start.</p>
+<div class="form-group">
+    <label for="ex0">Example textarea</label>
+    <div class="stt-wrapper">
+        <textarea class="form-control" id="ex0" rows="3"></textarea>
+        <a href="#" role="button" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</a>
+    </div>
+</div>
+
+<h2>Options:</h2>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 100px;">Name</th>
+            <th style="width: 50px;">Type</th>
+            <th style="width: 50px;">Default</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>continuous</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Setting for <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#dfn-continuous">SpeechRecognition.continuous</a></td>
+        </tr>
+        <tr>
+            <td>interim</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Setting for <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#dfn-interimresults">SpeechRecognition.interimResults</a></td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+
+<h2>Events:</h2>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 150px;">Event Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>nosupport.cast.stt</td>
+            <td>SpeechRecognition is not supported by this browser.</td>
+        </tr>
+        <tr>
+            <td>nospeech.cast.stt</td>
+            <td>No speech detected.</td>
+        </tr>
+        <tr>
+            <td>nomic.cast.stt</td>
+            <td>Microphone not found.</td>
+        </tr>
+        <tr>
+            <td>blocked.cast.stt</td>
+            <td>Microphone access is blocked.</td>
+        </tr>
+        <tr>
+            <td>denied.cast.stt</td>
+            <td>Microphone access was denied.</td>
+        </tr>
+        <tr>
+            <td>init.cast.stt</td>
+            <td>Initialization complete.</td>
+        </tr>
+        <tr>
+            <td>ready.cast.stt</td>
+            <td>SpeechRecognition is ready for click to start.</td>
+        </tr>
+        <tr>
+            <td>start.cast.stt</td>
+            <td>SpeechRecognition started.</td>
+        </tr>
+        <tr>
+            <td>end.cast.stt</td>
+            <td>SpeechRecognition ended.</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+
+</div> <!-- /.container -->
+
+</body>
+</html>

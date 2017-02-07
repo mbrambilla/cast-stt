@@ -1,0 +1,30 @@
+﻿.stt-wrapper {
+    position: relative;
+}
+.stt-start {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: .25rem;
+    line-height: 1rem;
+    text-align: center;
+    color: #666;
+    content: " ";
+    border-radius: 50%;
+}
+.stt-start.enabled {
+    display: block;
+}
+.stt-start.disabled {
+    display: block;
+    cursor: not-allowed;
+    color: #ddd;
+}
+.stt-start.active {
+    display: block;
+    color: #fff;
+    background-color: #f00;
+}
