@@ -112,7 +112,7 @@
             var ignore_onend = false;
             var start_timestamp;
 
-            var outputMethod = this.isInput ? 'val' : 'html';
+            var outputMethod = this.isInput ? 'val' : 'text';
             var origTxt = this.$target[outputMethod]();
 
             this.recognition = new STT_RECOGNITION();
