@@ -121,6 +121,9 @@
 
             this.recognition.onstart = function() {
                 $selfRef.recognizing = true;
+                if ($selfRef.isInput) {
+                    $selfRef.$target.prop('readonly', true);
+                }
                 $selfRef.$element
                     .addClass('active')
                     .attr('aria-pressed', true);
@@ -153,6 +156,9 @@
 
             this.recognition.onend = function() {
                 $selfRef.recognizing = false;
+                if ($selfRef.isInput) {
+                    $selfRef.$target.prop('readonly', false);
+                }
                 $selfRef.$element
                     .removeClass('active')
                     .attr('aria-pressed', false);
