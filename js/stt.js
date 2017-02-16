@@ -252,6 +252,7 @@
                     + linebreak(final_transcript)
                     + linebreak(interim_transcript);
                 $selfRef.$target[outputMethod](output);
+                $selfRef.$target[0].scrollTop = $selfRef.$target[0].scrollHeight;
                 $selfRef.$element.trigger('result.cast.stt');
             };
         },
