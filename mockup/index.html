@@ -28,14 +28,14 @@
     <label for="ex0">Example textarea</label>
     <div class="stt-wrapper">
         <textarea class="form-control" id="ex0" rows="3"></textarea>
-        <a href="#" role="button" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+        <a href="#" id="cex0" role="button" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
     </div>
 </div>
 
 <h3>Div</h3>
 <div class="stt-wrapper">
     <div class="card card-block" id="ex1"></div>
-    <a href="#" role="button" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+    <a href="#" id="cex1" role="button" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
 </div>
 
 <hr />
@@ -109,6 +109,10 @@ $('#mySTT').CAST_STT([options]);
             <td>Disable the control button/link.</td>
         </tr>
         <tr>
+            <td>update</td>
+            <td>Update the control button/link position.</td>
+        </tr>
+        <tr>
             <td>dispose</td>
             <td>Stop speech recognition and removes event listeners and data.</td>
         </tr>
@@ -157,6 +161,10 @@ $('#mySTT').CAST_STT([options]);
         <tr>
             <td>start.cast.stt</td>
             <td>SpeechRecognition started.</td>
+        </tr>
+        <tr>
+            <td>result.cast.stt</td>
+            <td>SpeechRecognition result returned and content updated.</td>
         </tr>
         <tr>
             <td>end.cast.stt</td>

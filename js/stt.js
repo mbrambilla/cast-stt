@@ -30,6 +30,7 @@
     var CAST_STT = function(element, options) {
         this.$element = $(element);
         this.$target = null;
+        this.instance = null;
         this.isInput = false;
 
         this.recognition = null;
@@ -56,6 +57,8 @@
             var nodeName = this.$target[0].nodeName.toLowerCase();
             this.isInput = /^(input|textarea)$/.test(nodeName);
 
+            this.instance = this._getID(this.$element, 'cast-stt');
+
             this.enable();
 
             // Catch modal close
@@ -64,6 +67,13 @@
                     if (e.isDefaultPrevented()) { return; }
                     $selfRef.end();
                 });
+
+            // Bind callbacks to handle user interaction
+            // Thottle them to reduce workload
+            if (this.isInput) {
+                this.$target.on('keyup.cast.stt', this._throttle($.proxy(this.update, this), 250));
+            }
+            $(window).on('resize.cast.stt' + this.instance, this._throttle($.proxy(this.update, this), 250));
 
             this.$element.trigger('init.cast.stt');
         },
@@ -105,6 +115,45 @@
                 .addClass('disabled');
         },
 
+        update : function() {
+            this._resetScrollbar();
+            this._setScrollbar();
+        },
+
+        _checkScrollbar : function() {
+            if (this.$target[0].clientHeight < this.$target[0].scrollHeight) {
+                return true;
+            }
+            return false;
+        },
+
+        _measureScrollbar : function() {
+            var $body = $(document.body);
+            var scrollDiv = document.createElement('div');
+            scrollDiv.className = 'stt-scrollbar-measure';
+            $body.append(scrollDiv);
+            var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
+            $body[0].removeChild(scrollDiv);
+            return scrollbarWidth;
+        },
+
+        _setScrollbar : function() {
+            if (this._checkScrollbar()) {
+                var scrollbarWidth = this._measureScrollbar();
+                this.$element.data('cast.pos-right', this.$element[0].style.right || '');
+                var pos = parseFloat(this.$element.css('right') || 0);
+                this.$element.css('right', pos + scrollbarWidth);
+            }
+        },
+
+        _resetScrollbar : function() {
+            var pos = this.$element.data('cast.pos-right');
+            if (typeof pos !== undefined) {
+                this.$element.css('right', pos);
+                this.$element.removeData('cast.pos-right');
+            }
+        },
+
         _bindAPI : function() {
             var $selfRef = this;
 
@@ -126,7 +175,9 @@
                 }
                 $selfRef.$element
                     .addClass('active')
-                    .attr('aria-pressed', true);
+                    .attr('aria-pressed', true)
+                    .on('result.cast.stt', $selfRef._throttle($.proxy($selfRef.update, $selfRef), 250));
+
                 // Speech recognition ready
                 $selfRef.$element.trigger('start.cast.stt');
             };
@@ -201,6 +252,7 @@
                     + linebreak(final_transcript)
                     + linebreak(interim_transcript);
                 $selfRef.$target[outputMethod](output);
+                $selfRef.$element.trigger('result.cast.stt');
             };
         },
 
@@ -209,10 +261,13 @@
                 this.recognition.stop();
                 this.recognition = null;
             }
+            this.$target.off('result.cast.stt');
         },
 
         dispose : function() {
             this._unbindAPI();
+            $(window).off('.cast.stt' + this.instance);
+            this.$target.off('.cast.stt');
             this.$element
                 .off('.cast.stt')
                 .removeClass('enabled disabled active')
@@ -220,10 +275,45 @@
 
             this.$element = null;
             this.$target = null;
+            this.instance = null;
             this.isInput = null;
             this.recognition = null;
             this.recognizing = null;
             this.settings = null;
+        },
+
+        _getID : function($node, prefix) {
+            var nodeID = $node.attr('id');
+            if (nodeID === undefined) {
+                do nodeID = prefix + '-' + ~~(Math.random() * 1000000);
+                while (document.getElementById(nodeID));
+                $node.attr('id', nodeID);
+            }
+            return nodeID;
+        },
+
+        _throttle : function(fn, threshhold, scope) {
+            /* From: http://remysharp.com/2010/07/21/throttling-function-calls/ */
+            threshhold || (threshhold = 250);
+            var last;
+            var deferTimer;
+            return function() {
+                var context = scope || this;
+
+                var now = +new Date();
+                var args = arguments;
+                if (last && now < last + threshhold) {
+                    // hold on to it
+                    clearTimeout(deferTimer);
+                    deferTimer = setTimeout(function() {
+                        last = now;
+                        fn.apply(context, args);
+                    }, threshhold);
+                } else {
+                    last = now;
+                    fn.apply(context, args);
+                }
+            };
         }
     };
 
