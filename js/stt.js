@@ -51,7 +51,7 @@
         _init : function() {
             var $selfRef = this;
 
-            var selector = this.$element.data('target');
+            var selector = this.settings.target;
             this.$target = $(selector);
 
             var nodeName = this.$target[0].nodeName.toLowerCase();
