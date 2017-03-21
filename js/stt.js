@@ -210,16 +210,18 @@
                 if ($selfRef.isInput) {
                     $selfRef.$target.prop('readonly', false);
                 }
-                $selfRef.$element
-                    .removeClass('active')
-                    .attr('aria-pressed', false);
-                if (ignore_onend) {
-                    return;
-                }
-                $selfRef.$element.trigger('end.cast.stt');
-                if (!final_transcript) {
-                    $selfRef.$element.trigger('ready.cast.stt');
-                    return;
+                if ($selfRef.$element) {
+                    $selfRef.$element
+                        .removeClass('active')
+                        .attr('aria-pressed', false);
+                    if (ignore_onend) {
+                        return;
+                    }
+                    $selfRef.$element.trigger('end.cast.stt');
+                    if (!final_transcript) {
+                        $selfRef.$element.trigger('ready.cast.stt');
+                        return;
+                    }
                 }
             };
 
