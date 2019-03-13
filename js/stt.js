@@ -16,10 +16,19 @@
             window.msSpeechRecognition ||
             window.oSpeechRecognition;
 
-        if (SpeechRecognition !== undefined) {
+        // Consider as unavailable for Chrome on Android and iOS as it does not work through browser.
+        // The system based STT has preference.
+        var chromeMobile = false;
+        if (navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('Android') !== -1 && !navigator.userAgent.match(/iPhone|iPod|iPad/)) {
+            chromeMobile = true;
+        }
+
+
+        if (typeof SpeechRecognition !== 'undefined' && !chromeMobile) {
             STT_SUPPORT = true;
             STT_RECOGNITION = SpeechRecognition;
         } else {
+            /* eslint-disable-next-line no-console */
             console.warn('SpeechRecognition is not supported by this browser.');
             $(document.body).trigger('nosupport.cast.stt');
         }
@@ -122,24 +131,25 @@
 
         _checkScrollbar : function() {
             if (this.$target[0].clientHeight < this.$target[0].scrollHeight) {
-                return true;
+                if (this.$target.css('overflow-y') !== 'hidden') {
+                    return true;
+                }
             }
             return false;
         },
 
         _measureScrollbar : function() {
-            var $body = $(document.body);
             var scrollDiv = document.createElement('div');
-            scrollDiv.className = 'stt-scrollbar-measure';
-            $body.append(scrollDiv);
+            scrollDiv.setAttribute('style', ' position: absolute; top: -9999px; width: 50px; height: 50px; overflow: scroll;');
+            document.body.appendChild(scrollDiv);
             var scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
-            $body[0].removeChild(scrollDiv);
+            document.body.removeChild(scrollDiv);
             return scrollbarWidth;
         },
 
         _setScrollbar : function() {
             if (this._checkScrollbar()) {
-                var scrollbarWidth = this._measureScrollbar();
+                var scrollbarWidth = _measureScrollbar();
                 this.$element.data('cast.pos-right', this.$element[0].style.right || '');
                 var pos = parseFloat(this.$element.css('right') || 0);
                 this.$element.css('right', pos + scrollbarWidth);
@@ -148,7 +158,7 @@
 
         _resetScrollbar : function() {
             var pos = this.$element.data('cast.pos-right');
-            if (typeof pos !== undefined) {
+            if (typeof pos !== 'undefined') {
                 this.$element.css('right', pos);
                 this.$element.removeData('cast.pos-right');
             }
@@ -157,9 +167,9 @@
         _bindAPI : function() {
             var $selfRef = this;
 
-            var final_transcript = '';
-            var ignore_onend = false;
-            var start_timestamp;
+            var finalTranscript = '';
+            var ignoreOnEnd = false;
+            var startTimestamp;
 
             var outputMethod = this.isInput ? 'val' : 'text';
             var origTxt = this.$target[outputMethod]();
@@ -183,25 +193,25 @@
             };
 
             this.recognition.onerror = function(event) {
-                if (event.error == 'no-speech') {
+                if (event.error === 'no-speech') {
                     // No speech was detected
                     $selfRef.$element.trigger('nospeech.cast.stt');
-                    ignore_onend = true;
+                    ignoreOnEnd = true;
                 }
-                if (event.error == 'audio-capture') {
+                if (event.error === 'audio-capture') {
                     // Microphone not found
                     $selfRef.$element.trigger('nomic.cast.stt');
-                    ignore_onend = true;
+                    ignoreOnEnd = true;
                 }
-                if (event.error == 'not-allowed') {
-                    if (event.timeStamp - start_timestamp < 100) {
+                if (event.error === 'not-allowed') {
+                    if (event.timeStamp - startTimestamp < 100) {
                         // Microphone access is blocked
                         $selfRef.$element.trigger('blocked.cast.stt');
                     } else {
                         // Microphone access was denied
                         $selfRef.$element.trigger('denied.cast.stt');
                     }
-                    ignore_onend = true;
+                    ignoreOnEnd = true;
                 }
             };
 
@@ -214,45 +224,44 @@
                     $selfRef.$element
                         .removeClass('active')
                         .attr('aria-pressed', false);
-                    if (ignore_onend) {
+                    if (ignoreOnEnd) {
                         return;
                     }
                     $selfRef.$element.trigger('end.cast.stt');
-                    if (!final_transcript) {
+                    if (!finalTranscript) {
                         $selfRef.$element.trigger('ready.cast.stt');
-                        return;
                     }
                 }
             };
 
             this.recognition.onresult = function(event) {
                 function capitalize(s) {
-                    var first_char = /\S/;
-                    return s.replace(first_char, function(m) { return m.toUpperCase(); });
+                    var firstChar = /\S/;
+                    return s.replace(firstChar, function(m) { return m.toUpperCase(); });
                 }
 
                 function linebreak(s) {
                     if (!$selfRef.isInput) {
-                        var two_line = /\n\n/g;
-                        var one_line = /\n/g;
-                        return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+                        var twoLine = /\n\n/g;
+                        var oneLine = /\n/g;
+                        return s.replace(twoLine, '<p></p>').replace(oneLine, '<br>');
                     }
                     return s;
                 }
 
-                var interim_transcript = '';
+                var interimTranscript = '';
                 for (var i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
-                        final_transcript += event.results[i][0].transcript;
+                        finalTranscript += event.results[i][0].transcript;
                     } else {
-                        interim_transcript += event.results[i][0].transcript;
+                        interimTranscript += event.results[i][0].transcript;
                     }
                 }
-                final_transcript = capitalize(final_transcript);
+                finalTranscript = capitalize(finalTranscript);
 
                 var output = origTxt
-                    + linebreak(final_transcript)
-                    + linebreak(interim_transcript);
+                    + linebreak(finalTranscript)
+                    + linebreak(interimTranscript);
                 $selfRef.$target[outputMethod](output);
                 $selfRef.$target[0].scrollTop = $selfRef.$target[0].scrollHeight;
                 $selfRef.$element.trigger('result.cast.stt');
@@ -260,7 +269,7 @@
         },
 
         _unbindAPI : function() {
-            if( this.recognition) {
+            if (this.recognition) {
                 this.recognition.stop();
                 this.recognition = null;
             }
@@ -287,9 +296,11 @@
 
         _getID : function($node, prefix) {
             var nodeID = $node.attr('id');
-            if (nodeID === undefined) {
-                do nodeID = prefix + '-' + ~~(Math.random() * 1000000);
-                while (document.getElementById(nodeID));
+            if (typeof nodeID === 'undefined') {
+                do {
+                    /* eslint-disable-next-line no-bitwise */
+                    nodeID = prefix + '-' + ~~(Math.random() * 1000000); // "~~" acts like a faster Math.floor() here
+                } while (document.getElementById(nodeID));
                 $node.attr('id', nodeID);
             }
             return nodeID;
@@ -297,13 +308,15 @@
 
         _throttle : function(fn, threshhold, scope) {
             /* From: http://remysharp.com/2010/07/21/throttling-function-calls/ */
-            threshhold || (threshhold = 250);
+            if (typeof threshhold === 'undefined') {
+                threshhold = 250;
+            }
             var last;
             var deferTimer;
             return function() {
                 var context = scope || this;
 
-                var now = +new Date();
+                var now = Number(new Date());
                 var args = arguments;
                 if (last && now < last + threshhold) {
                     // hold on to it
@@ -321,7 +334,7 @@
     };
 
     function Plugin(option) {
-        if (!STT_SUPPORT) { return; } // Bail if not supported
+        if (!STT_SUPPORT) { return this; } // Bail if not supported
 
         var args = [].splice.call(arguments, 1);
         return this.each(function() {
@@ -330,7 +343,7 @@
             var options = typeof option === 'object' && option;
 
             if (!data) {
-                $this.data('cast.stt', (data = new CAST_STT(this, options)));
+                $this.data('cast.stt', data = new CAST_STT(this, options));
             }
             if (typeof option === 'string') {
                 data[option].apply(data, args);
@@ -346,5 +359,4 @@
             $(this).CAST_STT();
         });
     });
-
-})(jQuery);
+}(jQuery));
