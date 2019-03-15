@@ -149,7 +149,7 @@
 
         _setScrollbar : function() {
             if (this._checkScrollbar()) {
-                var scrollbarWidth = _measureScrollbar();
+                var scrollbarWidth = this._measureScrollbar();
                 this.$element.data('cast.pos-right', this.$element[0].style.right || '');
                 var pos = parseFloat(this.$element.css('right') || 0);
                 this.$element.css('right', pos + scrollbarWidth);
