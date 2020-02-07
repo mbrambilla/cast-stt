@@ -69,6 +69,7 @@
             this.instance = this._getID(this.$element, 'cast-stt');
 
             this.enable();
+            this.update();
 
             // Catch modal close
             this.$element.closest('.modal')
@@ -78,9 +79,14 @@
                 });
 
             // Bind callbacks to handle user interaction
-            // Thottle them to reduce workload
             if (this.isInput) {
-                this.$target.on('keyup.cast.stt', this._throttle($.proxy(this.update, this), 250));
+                // Throttle input events to reduce workload
+                this.$target.on('input.cast.stt', this._throttle($.proxy(this.update, this), 250));
+                // Deal with user resizing a textarea
+                new MutationObserver($.proxy($selfRef.update, $selfRef)).observe(this.$target[0], {
+                    attributes: true,
+                    attributeFilter: ['style']
+                });
             }
             $(window).on('resize.cast.stt' + this.instance, this._throttle($.proxy(this.update, this), 250));
 
