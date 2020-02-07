@@ -2,16 +2,15 @@
 <html lang="en-us">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Speech-to-Text - In Browser Test</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/figuration@4.0.0-beta.2/dist/css/figuration.min.css" integrity="sha384-76nGBn7o6RY82Cfyqz00Gqcru69AsOx9qwAJ9+c5MWw3Tcx4LuOVOG+4rXEpvV+Z" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <link rel="stylesheet" href="../css/stt.css" />
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/figuration@4.0.0-beta.2/dist/js/figuration.min.js" integrity="sha384-vXQ8My+UDac/qwS3tBgLTL6tgQLjivwdMSZnScJ1//SIPF1T4XM6uaItSZN/+Ye0" crossorigin="anonymous"></script>
 <script src="../js/stt.js"></script>
 </head>
 <body>
@@ -21,21 +20,38 @@
 <h1>Speech-to-Text - In Browser Test</h1>
 
 <h2>Examples</h2>
+<p>Click the microphone icon to start the STT for the associated input/container.</p>
+
+<h3>Input</h3>
+<div class="form-group">
+    <label for="ex0">Example input</label>
+    <div class="stt-wrapper">
+        <input type="text" id="ex0" class="form-control">
+        <a href="#" id="cex0" role="button" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+    </div>
+</div>
 
 <h3>Textarea</h3>
-<p>Click the microphone icon to start.</p>
 <div class="form-group">
-    <label for="ex0">Example textarea</label>
+    <label for="ex1">Example textarea</label>
     <div class="stt-wrapper">
-        <textarea class="form-control" id="ex0" rows="3"></textarea>
-        <a href="#" id="cex0" role="button" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+        <textarea class="form-control" id="ex1" rows="3"></textarea>
+        <a href="#" id="cex1" role="button" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="ex2">Example pre-filled textarea</label>
+    <div class="stt-wrapper">
+        <textarea class="form-control" id="ex2" rows="3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum ex quis fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam pharetra fermentum volutpat. Nam metus ex, posuere vitae feugiat non, interdum quis magna. Aenean in lorem at risus viverra dignissim id nec nulla. Nam posuere eget ipsum quis iaculis. Nulla sit amet tempor sem, ut sodales nisl. Integer commodo, lectus vestibulum pretium venenatis, ex dolor tristique massa, a feugiat nibh ligula ut diam. Aliquam erat volutpat.</textarea>
+        <a href="#" id="cex2" role="button" class="stt-start" data-cast="stt" data-target="#ex2"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
     </div>
 </div>
 
 <h3>Div</h3>
 <div class="stt-wrapper">
-    <div class="card card-block" id="ex1"></div>
-    <a href="#" id="cex1" role="button" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+    <div class="card card-body" id="ex3"></div>
+    <a href="#" id="cex3" role="button" class="stt-start" data-cast="stt" data-target="#ex3"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
 </div>
 
 <hr />
