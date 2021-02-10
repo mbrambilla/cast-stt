@@ -23,7 +23,6 @@
             chromeMobile = true;
         }
 
-
         if (typeof SpeechRecognition !== 'undefined' && !chromeMobile) {
             STT_SUPPORT = true;
             STT_RECOGNITION = SpeechRecognition;
@@ -75,7 +74,7 @@
             this.$element.closest('.modal')
                 .on('beforeHide.cfw.modal', function(e) {
                     if (e.isDefaultPrevented()) { return; }
-                    $selfRef.end();
+                    $selfRef.stop();
                 });
 
             // Bind callbacks to handle user interaction
