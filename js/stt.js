@@ -269,6 +269,7 @@
                     + linebreak(interimTranscript);
                 $selfRef.$target[outputMethod](output);
                 $selfRef.$target[0].scrollTop = $selfRef.$target[0].scrollHeight;
+                $selfRef.$target.trigger('change');
                 $selfRef.$element.trigger('result.cast.stt');
             };
         },
