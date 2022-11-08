@@ -27,7 +27,6 @@
             STT_SUPPORT = true;
             STT_RECOGNITION = SpeechRecognition;
         } else {
-            /* eslint-disable-next-line no-console */
             console.warn('SpeechRecognition is not supported by this browser.');
             $(document.body).trigger('nosupport.cast.stt');
         }
@@ -69,13 +68,6 @@
 
             this.enable();
             this.update();
-
-            // Catch modal close
-            this.$element.closest('.modal')
-                .on('beforeHide.cfw.modal', function(e) {
-                    if (e.isDefaultPrevented()) { return; }
-                    $selfRef.stop();
-                });
 
             // Bind callbacks to handle user interaction
             if (this.isInput) {
@@ -358,11 +350,23 @@
     }
 
     $.fn.CAST_STT = Plugin;
-    $.fn.CFW_Scrollspy.Constructor = CAST_STT;
 
     $(window).ready(function() {
         $('[data-cast="stt"]').each(function() {
             $(this).CAST_STT();
+        });
+
+        // Watch for 'hide' events
+        // check STT target visibility to see if recognition needs to be stopped.
+        $(document).on('afterHide.cfw.modal afterHide.cfw.popover', function() {
+            $('[data-cast="stt"]').each(function() {
+                var $stt = $(this);
+                if ($stt.data('cast.stt')) {
+                    if ($stt.data('cast.stt').recognizing && $stt.data('cast.stt').$target.is(':hidden')) {
+                        $stt.CAST_STT('stop');
+                    }
+                }
+            });
         });
     });
 }(jQuery));
