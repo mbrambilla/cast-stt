@@ -51,7 +51,8 @@
     CAST_STT.DEFAULTS = {
         target: null,
         continuous: true,   // SpeechRecognition.continuous
-        interim: true       // SpeechRecognition.interimResults
+        interim: true,      // SpeechRecognition.interimResults
+        lang: null          // SpeechRecognition.lang
     };
 
     CAST_STT.prototype = {
@@ -174,6 +175,9 @@
             this.recognition = new STT_RECOGNITION();
             this.recognition.continuous = this.settings.continuous;
             this.recognition.interimResults = this.settings.interim;
+            if (this.settings.lang !== null) {
+                this.recognition.lang = this.settings.lang;
+            }
 
             this.recognition.onstart = function() {
                 $selfRef.recognizing = true;
