@@ -3,6 +3,9 @@
 // https://github.com/GoogleChrome/webplatform-samples/blob/master/webspeechdemo/webspeechdemo.html
 // https://github.com/zenorocha/voice-elements/
 
+// Note: Why this only works with Chrome proper and not for other webkit/chromium/brave/opera/etc:
+// https://github.com/brave/brave-browser/issues/3725#issuecomment-555694620
+
 (function($) {
     'use strict';
 
@@ -168,6 +171,7 @@
             var finalTranscript = '';
             var ignoreOnEnd = false;
             var startTimestamp;
+            var langAttribute = null;
 
             var outputMethod = this.isInput ? 'val' : 'text';
             var origTxt = this.$target[outputMethod]();
@@ -175,6 +179,12 @@
             this.recognition = new STT_RECOGNITION();
             this.recognition.continuous = this.settings.continuous;
             this.recognition.interimResults = this.settings.interim;
+
+            // Check language - `data-lang` has precedence over `lang`
+            langAttribute = this._getLangAttribute(this.$target);
+            if (langAttribute !== null) {
+                this.recognition.lang = langAttribute;
+            }
             if (this.settings.lang !== null) {
                 this.recognition.lang = this.settings.lang;
             }
@@ -213,6 +223,10 @@
                         $selfRef.$element.trigger('denied.cast.stt');
                     }
                     ignoreOnEnd = true;
+                }
+                if (event.error === 'network') {
+                    // Network error, or not proper Chrome browser
+                    $selfRef.$element.trigger('nonetwork.cast.stt');
                 }
             };
 
@@ -294,6 +308,16 @@
             this.recognition = null;
             this.recognizing = null;
             this.settings = null;
+        },
+
+        _getLangAttribute : function (node) {
+            node = node instanceof jQuery ? node[0] : node;
+            var element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+            element = element.closest('[lang]');
+            if (element) {
+                return element.getAttribute('lang');
+            }
+            return null;
         },
 
         _getID : function($node, prefix) {

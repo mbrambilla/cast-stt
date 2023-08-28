@@ -29,7 +29,7 @@
     <label for="ex0">Example input</label>
     <div class="stt-wrapper">
         <input type="text" id="ex0" class="form-control">
-        <a href="#" id="cex0" role="button" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+        <button id="cex0" class="stt-start" data-cast="stt" data-target="#ex0"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
     <label for="ex1">Example textarea</label>
     <div class="stt-wrapper">
         <textarea class="form-control" id="ex1" rows="3"></textarea>
-        <a href="#" id="cex1" role="button" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+        <button id="cex1" class="stt-start" data-cast="stt" data-target="#ex1"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
     </div>
 </div>
 
@@ -46,23 +46,37 @@
     <label for="ex2">Example pre-filled textarea</label>
     <div class="stt-wrapper">
         <textarea class="form-control" id="ex2" rows="3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum ex quis fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam pharetra fermentum volutpat. Nam metus ex, posuere vitae feugiat non, interdum quis magna. Aenean in lorem at risus viverra dignissim id nec nulla. Nam posuere eget ipsum quis iaculis. Nulla sit amet tempor sem, ut sodales nisl. Integer commodo, lectus vestibulum pretium venenatis, ex dolor tristique massa, a feugiat nibh ligula ut diam. Aliquam erat volutpat.</textarea>
-        <a href="#" id="cex2" role="button" class="stt-start" data-cast="stt" data-target="#ex2"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+        <button id="cex2" class="stt-start" data-cast="stt" data-target="#ex2"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="ex2">Example - Spanish language defined</label>
+    <h3 class="h5">Example - Spanish language defined</h3>
     <p>Add <code>data-lang="es"</code> attribute to STT button</p>
     <div class="stt-wrapper">
         <textarea class="form-control" id="ex3" rows="3"></textarea>
-        <a href="#" id="cex3" role="button" class="stt-start" data-cast="stt" data-target="#ex3" data-lang="es"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+        <button id="cex3" class="stt-start" data-cast="stt" data-target="#ex3" data-lang="es"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
+    </div>
+</div>
+<div class="form-group">
+    <p>Add <code>lang="es"</code> attribute to acestor element</p>
+    <div class="stt-wrapper" lang="es">
+        <textarea class="form-control" id="ex4" rows="3"></textarea>
+        <button id="cex4" class="stt-start" data-cast="stt" data-target="#ex4"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
+    </div>
+</div>
+<div class="form-group">
+    <p>Add <code>lang="es"</code> attribute to input/textarea element</p>
+    <div class="stt-wrapper">
+        <textarea class="form-control" id="ex5" rows="3" lang="es"></textarea>
+        <button id="cex5" class="stt-start" data-cast="stt" data-target="#ex5"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
     </div>
 </div>
 
 <h3>Div</h3>
 <div class="stt-wrapper">
-    <div class="card card-body" id="ex4"></div>
-    <a href="#" id="cex4" role="button" class="stt-start" data-cast="stt" data-target="#ex4"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></a>
+    <div class="card card-body" id="ex6"></div>
+    <button id="cex6" class="stt-start" data-cast="stt" data-target="#ex6"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
 </div>
 
 <hr />
@@ -176,6 +190,10 @@ $('#mySTT').CAST_STT([options]);
         <tr>
             <td>denied.cast.stt</td>
             <td>Microphone access was denied.</td>
+        </tr>
+        <tr>
+            <td>nonetwork.cast.stt</td>
+            <td>Network error or <a href="https://github.com/brave/brave-browser/issues/3725#issuecomment-555694620">not proper Chrome browser</a>.</td>
         </tr>
         <tr>
             <td>init.cast.stt</td>
