@@ -46,7 +46,8 @@
         this.recognition = null;
         this.recognizing = false;
 
-        this.settings = $.extend({}, CAST_STT.DEFAULTS, this.$element.data(), options);
+        var parsedData = this._parseData(this.$element, CAST_STT.DEFAULTS);
+        this.settings = $.extend({}, CAST_STT.DEFAULTS, parsedData, options);
 
         this._init();
     };
@@ -323,9 +324,14 @@
             this.settings = null;
         },
 
-        _getLangAttribute : function (node) {
+        _getElement : function(node) {
             node = node instanceof jQuery ? node[0] : node;
             var element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+            return element;
+        },
+
+        _getLangAttribute : function(node) {
+            var element = this._getElement(node);
             element = element.closest('[lang]');
             if (element) {
                 return element.getAttribute('lang');
@@ -343,6 +349,59 @@
                 $node.attr('id', nodeID);
             }
             return nodeID;
+        },
+
+        _normalizeData : function(value) {
+            if (value === 'true') {
+                return true;
+            }
+
+            if (value === 'false') {
+                return false;
+            }
+
+            if (value === Number(value).toString()) {
+                return Number(value);
+            }
+
+            if (value === '' || value === 'null') {
+                return null;
+            }
+
+            if (typeof value !== 'string') {
+                return value;
+            }
+
+            try {
+                return JSON.parse(decodeURIComponent(value));
+            } catch {
+                return value;
+            }
+        },
+
+        _normalizeDataKey : function(key) {
+            return key.replace(/[A-Z]/g, chr => `-${chr.toLowerCase()}`);
+        },
+
+        _getDataAttribute : function(node, key) {
+            var element = this._getElement(node);
+            return this._normalizeData(element.getAttribute(`data-${this._normalizeDataKey(key)}`));
+        },
+
+        _parseData : function(node, object) {
+            var parsedData = {};
+            var element = this._getElement(node);
+
+            for (var prop in object) {
+                if (Object.prototype.hasOwnProperty.call(object, prop)) {
+                    var propName = this._normalizeDataKey(prop);
+                    var data = this._getDataAttribute(element, propName);
+                    if (data !== null) {
+                        parsedData[prop] = data;
+                    }
+                }
+            }
+            return parsedData;
         },
 
         _throttle : function(fn, threshhold, scope) {
