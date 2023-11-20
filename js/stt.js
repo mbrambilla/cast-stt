@@ -55,7 +55,8 @@
         target: null,
         continuous: true,   // SpeechRecognition.continuous
         interim: true,      // SpeechRecognition.interimResults
-        lang: null          // SpeechRecognition.lang
+        lang: null,         // SpeechRecognition.lang
+        useTranslate: false
     };
 
     CAST_STT.prototype = {
@@ -172,6 +173,13 @@
             var ignoreOnEnd = false;
             var startTimestamp;
             var langAttribute = null;
+            var langGoogleTranslate = null;
+
+            // Google Translate
+            if (typeof window.google?.translate === 'object') {
+                // Should return destination language or null value
+                langGoogleTranslate = document.querySelector('[class*="translated"]') && document.querySelector('[class*="translated"]').lang;
+            }
 
             var outputMethod = this.isInput ? 'val' : 'text';
             var origTxt = this.$target[outputMethod]();
@@ -187,6 +195,11 @@
             }
             if (this.settings.lang !== null) {
                 this.recognition.lang = this.settings.lang;
+            }
+
+            // Use translator preference
+            if (this.settings.useTranslate && langGoogleTranslate !== null)  {
+                this.recognition.lang = langGoogleTranslate;
             }
 
             this.recognition.onstart = function() {
