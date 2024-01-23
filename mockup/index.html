@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Speech-to-Text - In Browser Test</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/figuration@4.3.4/dist/css/figuration.min.css" integrity="sha384-27CNaeuUaKPPrvwYwtjW6JjqUhh89RcT4omYkXN4YpgUq6cfund39CEtVn1Q3Fah" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/figuration@4.4.0/dist/css/figuration.min.css" integrity="sha384-LoHzFyMpJ/5QljDjSWS5LLkG/cF8LTBrHzd5nljsHCu7kNjUjNBqO4xm7kax1Eqi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-<link rel="stylesheet" href="../css/stt.css" />
+<link rel="stylesheet" href="../css/stt.css">
 
 <!-- Figuration JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha384-bX7tuwViPEjy88JZEAaUe+FHOLZ9a9syCt8Z8UJ1sDbfwEIKdcFyHhW3yVPdFhd1" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/figuration@4.3.4/dist/js/figuration.min.js" integrity="sha384-mzBA/Zs5EuMaHKeM9e/x6uFYjpMlvciW2JRchT/WjcDgj7F4qPGHUDgJ/htfgHRg" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/figuration@4.4.0/dist/js/figuration.min.js" integrity="sha384-YE5dUlnt6uS3mOG8+ju4SsvmAjwr6J17gnJ4lYMFIcVl4K3BibdylOcS4E83iQBy" crossorigin="anonymous"></script>
 <script src="../js/stt.js"></script>
 </head>
 <body>
@@ -78,7 +78,7 @@
     <p>Add <code>data-use-translate="true"</code> attribute to STT button</p>
     <div class="stt-wrapper">
         <textarea class="form-control" id="ex6" rows="3"></textarea>
-        <button id="cex6" class="stt-start" data-cast="stt" data-target="#ex6" data-use-translate="true"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
+        <button id="cex6" class="stt-start" data-cast="stt" data-target="#ex6" data-lang="en" data-use-translate="true"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
     </div>
 </div>
 
@@ -89,7 +89,7 @@
     <button id="cex7" class="stt-start" data-cast="stt" data-target="#ex7"><span class="fa fa-microphone" aria-hidden="true"></span><span class="sr-only">Use Speech to Text</span></button>
 </div>
 
-<hr />
+<hr>
 
 <h2>Usage</h2>
 
@@ -118,16 +118,34 @@ $('#mySTT').CAST_STT([options]);
     </thead>
     <tbody>
         <tr>
+            <td>target</td>
+            <td>string</td>
+            <td><code>null</code></td>
+            <td>Selector for the target text input or container.</td>
+        </tr>
+        <tr>
             <td>continuous</td>
             <td>boolean</td>
-            <td>true</td>
-            <td>Setting for <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#dfn-continuous">SpeechRecognition.continuous</a></td>
+            <td><code>true</code></td>
+            <td>Setting for <a href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/continuous">SpeechRecognition.continuous</a></td>
         </tr>
         <tr>
             <td>interim</td>
             <td>boolean</td>
-            <td>true</td>
-            <td>Setting for <a href="https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#dfn-interimresults">SpeechRecognition.interimResults</a></td>
+            <td><code>true</code></td>
+            <td>Setting for <a href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/interimResults">SpeechRecognition.interimResults</a></td>
+        </tr>
+        <tr>
+            <td>lang</td>
+            <td>string | null</td>
+            <td><code>null</code></td>
+            <td>Setting for <a href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/lang">SpeechRecognition.lang</a></td>
+        </tr>
+        <tr>
+            <td>useTranslate</td>
+            <td>boolean</td>
+            <td><code>false</code></td>
+            <td>Detect if Google Translate is used and override the <code>lang</code> option with the target language.</td>
         </tr>
     </tbody>
     </table>
